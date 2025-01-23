@@ -24,8 +24,8 @@
 	
 	Write-Output "Scanning Directory: $path"
 	
-	
-	# Define the directory to scan
+
+# Define the directory to scan
 	$directoryPath = $path
 	
 	# Get all files in the directory
@@ -70,7 +70,7 @@
 		
 		
 	}
-	
+
 	
 	
 	# Prompt the user for confirmation
@@ -91,26 +91,53 @@
 		
 		foreach ($group in $duplicates)
 		{
-			$filesToDelete = $group.Group | Select-Object -Skip 1
-			foreach ($file in $filesToDelete)
-			{
-				Remove-Item -Path $file.FullName -Force
-				
-				Clear-Host
-				Write-Output ""
-				Write-Output ""
+            #define an empty array to be used as a menu
+            $menu = @()
+            foreach ($file in $group.Group){
+                #fill the menu array with the files in this group
+                $menu+=$file
+            }
+            #write the custom menu
+            write-host "========================"
+            for ($i=0;$i -lt $menu.Length; $i++){
+                write-host $($i + 1) - $menu[$i]
+            }
+            $answer = read-host "Please use a number to select a file to keep: "
+
+            #Check if the user supplied a valid number.  There could be some error checking here as it just checks
+            #that the user supplied a number greater than 0 and less than the length + 1 because humans don't count from 0
+            #It will just exit if the user submits something other than a valid number
+            if (($answer -le $($menu.Length + 1)) -and ($answer -gt 0)){
+                #remove the selected file from the array
+                $menu[$($answer-1)] = $null
+                foreach ($file in $menu){
+                    #delete the files silentlycontinue because there will probably be an error from trying to delete $null
+                    Remove-Item -Path $menu.FullName -ErrorAction SilentlyContinue -Force
+                }
+            }
+
+			#$filesToDelete = $group.Group | Select-Object -Skip 1
+			#foreach ($file in $filesToDelete)
+			#{
+			#	Remove-Item -Path $file.FullName -Force
+			#	
+			#	Write-Output ""
+			#	Clear-Host
+			#	Write-Output ""
 				# Optional: Confirm completion
-				Write-Output "Script completed. All Duplicates Files Deleted."
-				Write-Output ""
-				Write-Output ""
+			#	Write-Output "Script completed. All Duplicates Files Deleted."
 				
 				
-			}
+				
+			#}
 		}
 		
 		
 	}
 	
+
+
+
 
 
 
