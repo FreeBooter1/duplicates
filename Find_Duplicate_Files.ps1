@@ -112,24 +112,12 @@
                 $menu[$($answer-1)] = $null
                 foreach ($file in $menu){
                     #delete the files silentlycontinue because there will probably be an error from trying to delete $null
-                    Remove-Item -Path $menu.FullName -ErrorAction SilentlyContinue -Force
+				Remove-Item -Path $menu.FullName -ErrorAction SilentlyContinue -Force
+				
                 }
             }
 
-			#$filesToDelete = $group.Group | Select-Object -Skip 1
-			#foreach ($file in $filesToDelete)
-			#{
-			#	Remove-Item -Path $file.FullName -Force
-			#	
-			#	Write-Output ""
-			#	Clear-Host
-			#	Write-Output ""
-				# Optional: Confirm completion
-			#	Write-Output "Script completed. All Duplicates Files Deleted."
-				
-				
-				
-			#}
+			
 		}
 		
 		
