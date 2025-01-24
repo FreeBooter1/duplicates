@@ -29,7 +29,7 @@
 	$directoryPath = $path
 	
 	# Get all files in the directory
-	$files = Get-ChildItem -Path $directoryPath -File
+	$files = Get-ChildItem -Recurse -Path $directoryPath -File
 	
 	# Create a hash table to store file hashes
 	$fileHashes = @{ }
@@ -41,7 +41,7 @@
 	foreach ($file in $files)
 	{
 		# Compute the hash of the file
-		$fileHash = Get-FileHash -Path $file.FullName -Algorithm MD5
+		$fileHash = Get-FileHash -LiteralPath $file.FullName -Algorithm MD5
 		
 		# Check if the hash already exists in the hash table
 		if ($fileHashes.ContainsKey($fileHash.Hash))
